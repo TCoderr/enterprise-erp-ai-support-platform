@@ -1,0 +1,33 @@
+# Build
+bin/
+obj/
+TestResults/
+*.user
+.vs/
+.idea/
+
+# Web
+node_modules/
+src/web/dist/
+src/Kantar.Api/wwwroot/
+src/web/test-results/
+src/web/playwright-report/
+src/web/.vite/
+
+# Local secrets and stacks (never committed)
+.local/
+.local-*/
+.env
+.env.*
+!.env.example
+*.pfx
+*.pem
+*.key
+
+# Verification artifacts: raw logs and private outputs stay local
+artifacts/verification/raw/
+artifacts/verification/private/
+
+# Tool state
+.claude/settings.local.json
+.impeccable/

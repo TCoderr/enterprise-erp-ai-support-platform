@@ -1,0 +1,1375 @@
+/* ---------- Düğmeler ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 40px;
+  padding: var(--s2) var(--s4);
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-plate);
+  font-weight: 600;
+  font-size: var(--t-data);
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--zebra);
+  border-color: var(--ink-muted);
+  color: var(--ink);
+}
+
+.btn:active {
+  background: var(--neutral-bg);
+}
+
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF;
+}
+
+.btn--primary:hover,
+.btn--primary:active {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #FFFFFF;
+}
+
+.btn--danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn--danger:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn--small {
+  min-height: 32px;
+  padding: var(--s1) var(--s3);
+  font-size: var(--t-meta);
+}
+
+/* On touch-sized screens every button is a full 40 px target, the compact ones included. */
+@media (max-width: 719.98px) {
+  .btn--small {
+    min-height: 40px;
+  }
+}
+
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  color: var(--ink-muted);
+  background: var(--neutral-bg);
+  border-color: var(--line);
+  cursor: not-allowed;
+}
+
+.btn[aria-busy='true'] {
+  cursor: progress;
+}
+
+.linkbtn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  font-weight: inherit;
+  text-align: left;
+}
+
+.linkbtn:hover {
+  color: var(--rail-active);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Durum etiketi ve belge plakası ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px var(--s2);
+  border-radius: var(--r-plate);
+  font-size: var(--t-label);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: var(--neutral-bg);
+  color: var(--neutral);
+  border: 1px solid transparent;
+}
+
+.tag--info {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.tag--warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.tag--ok {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+
+.tag--danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* Plain tags carry longer wording (scope, provider label) and may wrap; state tags never break. */
+.tag--plain {
+  background: var(--panel);
+  border-color: var(--line-strong);
+  color: var(--ink);
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Long codes (slugs, correlation ids) may break where they sit in running text or stacked rows. */
+.corr .code,
+.alert .code,
+.pagehead__sub .code,
+.tag--plain .code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 719.98px) {
+  table.stacked .code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+.plate {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--r-plate);
+  background: var(--rail);
+  color: var(--rail-text);
+  font-family: var(--font-plate);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* ---------- Sayfa başlığı ---------- */
+.pagehead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--s4) var(--s6);
+}
+
+.pagehead__main {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.pagehead h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+  font-size: var(--t-title);
+  font-weight: 650;
+}
+
+.pagehead h1 > span:not(.plate) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.pagehead__sub {
+  margin-top: var(--s2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+  font-size: var(--t-meta);
+}
+
+.pagehead__lead {
+  margin-top: var(--s2);
+  max-width: 72ch;
+  color: var(--ink-muted);
+  font-size: var(--t-data);
+}
+
+.meta {
+  margin-top: var(--s3);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s2) var(--s6);
+}
+
+.meta--flush {
+  margin-top: 0;
+}
+
+.meta dt {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.meta dd {
+  font-size: var(--t-data);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: center;
+}
+
+.actions .spacer {
+  flex: 1 1 var(--s4);
+}
+
+.actions--end {
+  justify-content: flex-end;
+}
+
+.actions--ruled {
+  border-top: 1px solid var(--line);
+}
+
+p.actions--ruled {
+  max-width: none;
+}
+
+.actions__note {
+  margin-right: auto;
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+@media (max-width: 719.98px) {
+  .actions--sticky {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin: var(--s6) calc(var(--s4) * -1) calc(var(--s4) * -1);
+    padding: var(--s3) var(--s4);
+    background: var(--panel);
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .actions--sticky .btn {
+    flex: 1 1 auto;
+  }
+
+  .actions--sticky.region--pad {
+    margin: 0;
+  }
+
+  html {
+    scroll-padding-bottom: 96px;
+  }
+}
+
+.section-h {
+  font-size: var(--t-section);
+  font-weight: 650;
+  margin-bottom: var(--s3);
+}
+
+.section-h--flush {
+  margin: 0;
+}
+
+.region {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.region--pad {
+  padding: var(--s4);
+}
+
+.stack {
+  display: grid;
+  gap: var(--s4);
+  min-width: 0;
+}
+
+.stack--wide {
+  gap: var(--s6);
+}
+
+.measure {
+  max-width: 72ch;
+}
+
+.measure-form {
+  max-width: 32rem;
+}
+
+/* ---------- Akış adımları ---------- */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) 0;
+  font-size: var(--t-meta);
+}
+
+.flow li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-muted);
+}
+
+/* The connector trails its step, so a wrapped line never starts with a dangling rule. */
+.flow li:not(:last-child)::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--line-strong);
+  margin: 0 var(--s2);
+}
+
+.flow li[data-step='done'] {
+  color: var(--ink);
+}
+
+.flow li[aria-current='step'] {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.flow li[aria-current='step'] .flow__label {
+  border-bottom: 2px solid var(--accent);
+}
+
+@media (max-width: 479.98px) {
+  .flow li:not(:last-child)::after {
+    width: 12px;
+    margin: 0 6px;
+  }
+}
+
+/* ---------- Terazi şeridi ---------- */
+.balance {
+  padding: var(--s4);
+}
+
+.balance__bar {
+  display: flex;
+  height: 20px;
+  border: 1px solid var(--rail);
+  border-radius: var(--r-plate);
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.balance__bar--empty {
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+
+.balance__seg {
+  min-width: 3px;
+}
+
+.balance__seg + .balance__seg {
+  border-left: 2px solid var(--panel);
+}
+
+.balance__seg--done {
+  background: var(--rail);
+}
+
+.balance__seg--open {
+  background: repeating-linear-gradient(135deg, var(--accent) 0 4px, var(--accent-tint) 4px 8px);
+}
+
+.balance__seg--cancel {
+  background: var(--panel);
+  box-shadow: inset 0 0 0 2px var(--line-strong);
+}
+
+.balance__seg--free {
+  background: var(--ok);
+}
+
+.balance__eq {
+  margin-top: var(--s3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--s2) var(--s4);
+}
+
+.balance__term {
+  display: grid;
+  min-width: 0;
+}
+
+.balance__term[data-op] {
+  grid-template-columns: auto auto;
+  column-gap: var(--s4);
+}
+
+.balance__term[data-op]::before {
+  content: attr(data-op);
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: end;
+  font-size: var(--t-subtitle);
+  line-height: 1.2;
+  color: var(--ink-muted);
+}
+
+.balance__term[data-op] dt,
+.balance__term[data-op] dd {
+  grid-column: 2;
+}
+
+.balance__term dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.balance__term dd {
+  font-size: var(--t-subtitle);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1.2;
+}
+
+.balance__warn {
+  margin-top: var(--s3);
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border-radius: 1px;
+}
+
+.swatch--done {
+  background: var(--rail);
+}
+
+.swatch--open {
+  background: repeating-linear-gradient(135deg, var(--accent) 0 3px, var(--accent-tint) 3px 6px);
+}
+
+.swatch--cancel {
+  background: var(--panel);
+  box-shadow: inset 0 0 0 2px var(--line-strong);
+}
+
+.swatch--free {
+  background: var(--ok);
+}
+
+@media (max-width: 479.98px) {
+  .balance__eq {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .balance__term[data-op] {
+    grid-template-columns: auto;
+  }
+
+  .balance__term[data-op]::before {
+    content: none;
+  }
+
+  .balance__term[data-op] dt,
+  .balance__term[data-op] dd {
+    grid-column: 1;
+  }
+}
+
+/* ---------- Tablolar ---------- */
+/* A table that still does not fit scrolls inside its region; a column is never clipped away. */
+.tablewrap {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+@media (min-width: 720px) {
+  th.code,
+  td.code {
+    white-space: nowrap;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-data);
+  line-height: 1.35;
+}
+
+caption {
+  text-align: left;
+  padding: var(--s3) var(--s4);
+  font-size: var(--t-section);
+  font-weight: 650;
+}
+
+caption small {
+  display: block;
+  font-size: var(--t-meta);
+  font-weight: 400;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+th,
+td {
+  padding: 10px var(--s3);
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--line);
+}
+
+thead th {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--ink-muted);
+  background: var(--zebra);
+  border-bottom: 1px solid var(--line-strong);
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+tbody th {
+  font-weight: 400;
+}
+
+th.num,
+td.num {
+  text-align: right;
+}
+
+/* Below the desktop width a long column header may wrap, so it does not widen its column at the cost of the name column. */
+@media (max-width: 1023.98px) {
+  thead th {
+    white-space: normal;
+  }
+}
+
+tbody tr:hover > * {
+  background: var(--zebra);
+}
+
+tfoot th,
+tfoot td {
+  font-weight: 650;
+  border-top: 1px solid var(--line-strong);
+}
+
+td.name {
+  overflow-wrap: anywhere;
+  min-width: 12ch;
+}
+
+td.wraptext {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.zero {
+  color: var(--ink-muted);
+}
+
+.cell-stack {
+  display: inline-grid;
+  gap: var(--s1);
+  justify-items: end;
+}
+
+@media (max-width: 719.98px) {
+  table.stacked thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  table.stacked,
+  table.stacked tbody,
+  table.stacked tfoot,
+  table.stacked tr,
+  table.stacked th,
+  table.stacked td {
+    display: block;
+  }
+
+  table.stacked caption {
+    display: block;
+  }
+
+  table.stacked tr {
+    padding: var(--s3) 0;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  table.stacked tbody tr:hover > * {
+    background: transparent;
+  }
+
+  table.stacked th,
+  table.stacked td {
+    border: 0;
+    padding: 3px var(--s4);
+  }
+
+  table.stacked td,
+  table.stacked tfoot th {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s4);
+    text-align: right;
+    white-space: normal;
+  }
+
+  table.stacked td::before {
+    content: attr(data-label);
+    flex: none;
+    max-width: 55%;
+    text-align: left;
+    font-size: var(--t-label);
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+
+  table.stacked tbody th[scope='row'] {
+    font-size: var(--t-body);
+  }
+
+  table.stacked td.name {
+    font-weight: 600;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  table.stacked td.name::before {
+    content: none;
+  }
+
+  table.stacked td:empty {
+    display: none;
+  }
+}
+
+/* Yatay kaydırmalı tablo: tabular kalması gereken günlükler */
+.scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-radius: var(--r-panel);
+}
+
+.scroller table {
+  min-width: 760px;
+}
+
+.scroller th:first-child,
+.scroller td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--panel);
+  box-shadow: 1px 0 0 var(--line-strong);
+}
+
+.scroller thead th:first-child {
+  background: var(--zebra);
+}
+
+.scroller tbody tr:hover > :first-child {
+  background: var(--zebra);
+}
+
+.scroll-hint {
+  font-size: var(--t-label);
+  color: var(--ink-muted);
+  padding: var(--s2) var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .scroll-hint {
+    display: none;
+  }
+}
+
+.loadmore {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--line);
+  font-size: var(--t-meta);
+  color: var(--ink-muted);
+}
+
+/* ---------- Formlar ---------- */
+.field {
+  display: grid;
+  gap: var(--s1);
+  min-width: 0;
+  align-content: start;
+}
+
+.field > label,
+.legend {
+  font-size: var(--t-meta);
+  font-weight: 600;
+}
+
+.field .hint {
+  font-size: var(--t-label);
+  color: var(--ink-muted);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--s2) var(--s3);
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-plate);
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--placeholder);
+  opacity: 1;
+}
+
+.input:hover,
+.select:hover,
+.textarea:hover {
+  border-color: var(--ink-muted);
+}
+
+.input[aria-invalid='true'],
+.select[aria-invalid='true'],
+.textarea[aria-invalid='true'] {
+  border-color: var(--danger);
+  box-shadow: inset 0 0 0 1px var(--danger);
+}
+
+.input[readonly] {
+  background: var(--zebra);
+  color: var(--ink-muted);
+}
+
+.input--qty {
+  width: 7.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.input--money {
+  width: 9.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.field-error {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  font-size: var(--t-meta);
+  color: var(--danger);
+  font-weight: 600;
+  text-align: left;
+}
+
+.field-error svg {
+  margin-top: 3px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 40px;
+  font-size: var(--t-data);
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: none;
+}
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0 var(--s4);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s3) var(--s4);
+  align-items: end;
+  padding: var(--s4);
+}
+
+.formgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s4);
+  align-items: start;
+}
+
+.formgrid .field--full {
+  grid-column: 1 / -1;
+}
+
+.counter {
+  font-size: var(--t-label);
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  justify-self: end;
+}
+
+/* Ürün seçici */
+.picker {
+  display: grid;
+  gap: var(--s2);
+}
+
+.picker__results {
+  border: 1px solid var(--line);
+  border-radius: var(--r-plate);
+  max-height: 264px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.picker__results > li + li {
+  border-top: 1px solid var(--line);
+}
+
+.picker__option {
+  display: grid;
+  grid-template-columns: minmax(9ch, auto) minmax(0, 1fr) auto;
+  gap: var(--s3);
+  align-items: baseline;
+  width: 100%;
+  min-height: 40px;
+  padding: var(--s2) var(--s3);
+  background: var(--panel);
+  border: 0;
+  text-align: left;
+  font-size: var(--t-data);
+}
+
+.picker__option:hover:not([disabled]) {
+  background: var(--zebra);
+}
+
+.picker__option[disabled] {
+  color: var(--ink-muted);
+  cursor: not-allowed;
+}
+
+.picker__status {
+  padding: var(--s2) var(--s3);
+  font-size: var(--t-meta);
+  color: var(--ink-muted);
+}
+
+/* ---------- Uyarılar ---------- */
+.alert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s1) var(--s3);
+  padding: var(--s3) var(--s4);
+  border-radius: var(--r-panel);
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+}
+
+.alert > svg {
+  margin-top: 4px;
+}
+
+.alert h2,
+.alert h3 {
+  font-size: var(--t-body);
+  font-weight: 650;
+}
+
+.alert p,
+.alert ul,
+.alert ol {
+  font-size: var(--t-data);
+  grid-column: 2;
+  max-width: 80ch;
+  overflow-wrap: anywhere;
+}
+
+.alert ul {
+  list-style: disc;
+  padding-left: 1.1em;
+}
+
+.alert .actions {
+  grid-column: 2;
+  margin-top: var(--s2);
+}
+
+.alert--danger {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+
+.alert--danger > svg,
+.alert--danger h2,
+.alert--danger h3 {
+  color: var(--danger);
+}
+
+.alert--warn {
+  background: var(--warn-bg);
+  border-color: var(--warn);
+}
+
+.alert--warn > svg,
+.alert--warn h2,
+.alert--warn h3 {
+  color: var(--warn);
+}
+
+.alert--info {
+  background: var(--info-bg);
+  border-color: var(--info);
+}
+
+.alert--info > svg,
+.alert--info h2,
+.alert--info h3 {
+  color: var(--info);
+}
+
+.alert--ok {
+  background: var(--ok-bg);
+  border-color: var(--ok);
+}
+
+.alert--ok > svg,
+.alert--ok h2,
+.alert--ok h3 {
+  color: var(--ok);
+}
+
+.corr {
+  font-size: var(--t-label);
+  color: var(--ink-muted);
+}
+
+.alert .corr {
+  font-size: var(--t-label);
+}
+
+.empty {
+  padding: var(--s8) var(--s4);
+  text-align: center;
+}
+
+.empty svg {
+  width: 32px;
+  height: 32px;
+  color: var(--ink-muted);
+}
+
+.empty h2,
+.empty h3 {
+  margin-top: var(--s2);
+  font-size: var(--t-section);
+  font-weight: 650;
+}
+
+.empty p {
+  margin: var(--s1) auto var(--s4);
+  max-width: 52ch;
+  color: var(--ink-muted);
+  font-size: var(--t-data);
+}
+
+.skeleton-row {
+  display: grid;
+  grid-template-columns: 14ch 1fr 8ch 8ch;
+  gap: var(--s4);
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.skeleton-row:first-of-type {
+  border-top: 0;
+}
+
+.skeleton-row span {
+  height: 12px;
+  border-radius: 1px;
+  background: var(--neutral-bg);
+}
+
+.skeleton-note {
+  padding: var(--s3) var(--s4);
+  font-size: var(--t-meta);
+  color: var(--ink-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-row span {
+    animation: pulse 1.2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0.45;
+    }
+  }
+}
+
+.confirm {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-plate);
+  padding: var(--s3);
+  display: grid;
+  gap: var(--s3);
+  background: var(--zebra);
+  font-size: var(--t-data);
+}
+
+/* ---------- Sekmeler (bağlantı tabanlı) ---------- */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s1);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.tabs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: var(--s2) var(--s4);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--t-data);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tabs a:hover {
+  background: var(--neutral-bg);
+}
+
+.tabs a[aria-current='page'],
+.tabs a[aria-current='true'] {
+  border-bottom-color: var(--accent);
+  color: var(--accent-text);
+}
+
+/* ---------- Destek yazışması ---------- */
+.thread > li {
+  padding: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.thread > li:first-child {
+  border-top: 0;
+}
+
+.thread__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1) var(--s3);
+  font-size: var(--t-meta);
+  margin-bottom: var(--s1);
+}
+
+.thread__head strong {
+  font-size: var(--t-data);
+}
+
+.thread__body {
+  max-width: 72ch;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.thread li[data-kind='internal'] {
+  background: var(--warn-bg);
+}
+
+.thread__cites {
+  margin-top: var(--s2);
+  font-size: var(--t-meta);
+  color: var(--ink-muted);
+  list-style: disc;
+  padding-left: 1.1em;
+}
+
+.pretext {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-width: 72ch;
+}
+
+/* ---------- Kaynaklı Yardım içeriği ---------- */
+.assist__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--line);
+  /* The panel scrolls on its own; its title and close button stay in view over a long answer. */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel);
+}
+
+.assist__head h2 {
+  font-size: var(--t-section);
+  font-weight: 650;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.assist__body {
+  padding: var(--s4);
+  display: grid;
+  gap: var(--s4);
+}
+
+.assist h3 {
+  font-size: var(--t-body);
+  font-weight: 650;
+}
+
+.answer {
+  display: grid;
+  gap: var(--s3);
+}
+
+.answer__text {
+  max-width: 68ch;
+  overflow-wrap: anywhere;
+}
+
+.sources {
+  counter-reset: src;
+  display: grid;
+  gap: var(--s2);
+}
+
+.sources > li {
+  counter-increment: src;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0 var(--s2);
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-plate);
+}
+
+.sources > li::before {
+  content: '[' counter(src) ']';
+  font-family: var(--font-plate);
+  font-weight: 600;
+  color: var(--ink-muted);
+  grid-row: span 3;
+}
+
+.sources a {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sources small {
+  font-size: var(--t-label);
+  color: var(--ink-muted);
+  grid-column: 2;
+}
+
+.sources blockquote {
+  margin: var(--s1) 0 0;
+  grid-column: 2;
+  font-size: var(--t-meta);
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* ---------- Güvenli Markdown çıktısı ---------- */
+.prose {
+  max-width: 72ch;
+  overflow-wrap: anywhere;
+}
+
+.prose > * + * {
+  margin-top: var(--s3);
+}
+
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  margin-top: var(--s6);
+  font-weight: 650;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose h3 {
+  font-size: var(--t-subtitle);
+}
+
+.prose h4 {
+  font-size: var(--t-section);
+}
+
+.prose h5,
+.prose h6 {
+  font-size: var(--t-body);
+}
+
+.prose ul {
+  list-style: disc;
+  padding-left: 1.25em;
+}
+
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+}
+
+.prose li + li {
+  margin-top: var(--s1);
+}
+
+.prose code {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.9em;
+  background: var(--neutral-bg);
+  padding: 1px 4px;
+  border-radius: var(--r-plate);
+}
+
+.prose pre {
+  margin: var(--s3) 0 0;
+  padding: var(--s3);
+  background: var(--zebra);
+  border: 1px solid var(--line);
+  border-radius: var(--r-plate);
+  overflow-x: auto;
+  font-size: var(--t-meta);
+  line-height: 1.45;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose--compact > * + * {
+  margin-top: var(--s2);
+}
+
+/* ---------- Gizli değer (geçici parola) ---------- */
+.secret {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+}
+
+.secret__value {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace;
+  font-size: var(--t-section);
+  font-weight: 600;
+  padding: var(--s1) var(--s3);
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-plate);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--s3) var(--s6);
+}
+
+.kv dt {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.kv dd {
+  font-size: var(--t-section);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.legal {
+  border: 2px solid var(--ink);
+  border-radius: var(--r-plate);
+  padding: var(--s3) var(--s4);
+  font-weight: 650;
+  font-size: var(--t-section);
+}

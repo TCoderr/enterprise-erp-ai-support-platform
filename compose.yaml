@@ -1,0 +1,153 @@
+# Kantar local stack. Start it through scripts/local-stack.ps1 (or .sh): the script creates the
+# private files this file refers to, checks free memory and picks the project name and port.
+#
+# Only the HTTPS port of the API is published, and only on 127.0.0.1. SQL Server has no host port.
+# SQL Server Developer edition is licensed for development and test use only.
+
+x-app: &app
+  image: kantar:local
+  build:
+    context: .
+  restart: "no"
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-CU27-ubuntu-22.04
+    restart: "no"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      # Caps SQL Server's own memory use. The container limit below stays above the documented 2 GB minimum.
+      MSSQL_MEMORY_LIMIT_MB: "1280"
+    # The image does not document a *_FILE variant for the sa password, so it comes from a private,
+    # git-ignored env file written by `local-stack init`.
+    env_file:
+      - ${KANTAR_LOCAL_DIR:-.local}/sqlserver.env
+    mem_limit: 2300m
+    volumes:
+      - sqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -b -Q 'SELECT 1' > /dev/null"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+      start_period: 15s
+
+  # One-shot, sysadmin connection: creates the database (collation, RCSI) and the two logins.
+  bootstrap:
+    <<: *app
+    command: ["--bootstrap"]
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    secrets:
+      - source: bootstrap_connection
+        target: ConnectionStrings__Bootstrap
+      - source: migrator_password
+        target: Database__MigratorPassword
+      - source: app_password
+        target: Database__AppPassword
+
+  # One-shot, migrator login: migrations, then the runtime grants.
+  migrator:
+    <<: *app
+    command: ["--migrate"]
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+    secrets:
+      - source: migrator_connection
+        target: ConnectionStrings__Migrator
+
+  api:
+    <<: *app
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    environment:
+      ASPNETCORE_URLS: https://+:8943
+      Kestrel__Certificates__Default__Path: /https/kantar-dev.pfx
+      Ai__Provider: ${KANTAR_AI_PROVIDER:-Demo}
+      Ai__LocalModel__BaseUrl: ${KANTAR_AI_LOCAL_BASE_URL:-}
+      Ai__LocalModel__Model: ${KANTAR_AI_LOCAL_MODEL:-}
+      Ai__LocalModel__AllowedPrivateHosts__0: ${KANTAR_AI_LOCAL_ALLOWED_HOST:-}
+      Security__Web__AnonymousRequestsPerMinute: ${KANTAR_RATE_ANONYMOUS:-30}
+      Security__Web__UserRequestsPerMinute: ${KANTAR_RATE_USER:-600}
+      Security__Web__AssistRequestsPerMinute: ${KANTAR_RATE_ASSIST:-6}
+    mem_limit: 512m
+    ports:
+      - "127.0.0.1:${KANTAR_HTTPS_PORT:-8943}:8943"
+    volumes:
+      - ${KANTAR_LOCAL_DIR:-.local}/certs:/https:ro
+    secrets:
+      - source: app_connection
+        target: ConnectionStrings__App
+      - source: csrf_key
+        target: Security__Web__CsrfKey
+      - source: https_certificate_password
+        target: Kestrel__Certificates__Default__Password
+    healthcheck:
+      test: ["CMD", "dotnet", "/app/Kantar.Api.dll", "--probe", "https://localhost:8943/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+  worker:
+    <<: *app
+    command: ["--worker"]
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    mem_limit: 384m
+    secrets:
+      - source: app_connection
+        target: ConnectionStrings__App
+    healthcheck:
+      test: ["CMD", "dotnet", "/app/Kantar.Api.dll", "--worker-heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # Demo data. Runs with the restricted application login; safe to run repeatedly.
+  seed:
+    <<: *app
+    profiles: ["seed"]
+    command: ["--seed"]
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    volumes:
+      - ${KANTAR_LOCAL_DIR:-.local}/seed:/run/seed:ro
+    secrets:
+      - source: app_connection
+        target: ConnectionStrings__App
+
+volumes:
+  sqldata:
+    labels:
+      dev.kantar.stack: "true"
+
+secrets:
+  bootstrap_connection:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/bootstrap_connection
+  migrator_connection:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/migrator_connection
+  app_connection:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/app_connection
+  migrator_password:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/migrator_password
+  app_password:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/app_password
+  csrf_key:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/csrf_key
+  https_certificate_password:
+    file: ${KANTAR_LOCAL_DIR:-.local}/secrets/https_certificate_password

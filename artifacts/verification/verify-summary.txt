@@ -1,0 +1,11 @@
+﻿Kantar verification summary
+generated (UTC): 2026-10-11T22:04:23.2491089Z
+this invocation: 20261011T220422Z-5eib
+source-fingerprint sha256:1cd663dcc5ec6be55b9054bf746abfefb8835bc88d711c6b0725944f9220c6a0 files=316
+
+Rows marked 'earlier invocation' were NOT run now; they passed on this same source in the invocation named in the row.
+
+gate         result                     invocation              seconds  detail
+ai-live      not-run                    20261011T220422Z-5eib         0  NOT RUN - no local model configured; live model behaviour is unverified
+
+not requested in this invocation: scripts, restore, build, unit, integration, web, migrations, e2e, smoke, scans

@@ -1,0 +1,60 @@
+/* Design tokens — the single source is DESIGN.md at the repository root. */
+:root {
+  color-scheme: light;
+
+  --ink: #16202B;
+  --ink-muted: #4A5866;
+  --placeholder: #5C6A78;
+  --ground: #EEF2F5;
+  --panel: #FFFFFF;
+  --zebra: #F6F8FA;
+  --line: #C5CED6;
+  --line-strong: #7C8A97;
+  --rail: #14304A;
+  --rail-active: #0C2135;
+  --rail-text: #E8EFF6;
+  --rail-text-muted: #AEC2D4;
+  --accent: #B4410A;
+  --accent-hover: #933407;
+  --accent-text: #A23A08;
+  --accent-tint: #FCEDE2;
+  --link: #1A568A;
+  --focus: #0B5FCC;
+  --focus-on-rail: #FFD25A;
+  --ok: #17603B;
+  --ok-bg: #E3F2E9;
+  --warn: #6F4700;
+  --warn-bg: #FFF0C7;
+  --danger: #9C2219;
+  --danger-bg: #FCE7E4;
+  --info: #1A568A;
+  --info-bg: #E2EDF7;
+  --neutral: #3F4C59;
+  --neutral-bg: #E7ECF0;
+
+  --font-ui: 'Sofia Sans Variable', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-plate: 'Sofia Sans Condensed Variable', 'Arial Narrow', 'Segoe UI', system-ui, sans-serif;
+
+  --t-label: 0.8125rem;
+  --t-meta: 0.875rem;
+  --t-data: 0.9375rem;
+  --t-body: 1rem;
+  --t-section: 1.125rem;
+  --t-subtitle: 1.25rem;
+  --t-title: 1.5rem;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s6: 24px;
+  --s8: 32px;
+  --s12: 48px;
+
+  --r-plate: 2px;
+  --r-panel: 4px;
+  --float-shadow: 0 8px 24px rgba(12, 33, 53, 0.18);
+  --rail-width: 232px;
+  --assist-width: 380px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}

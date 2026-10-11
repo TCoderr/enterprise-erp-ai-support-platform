@@ -1,0 +1,528 @@
+/* ---------- Kabuk: üst çubuk, gezinme rayı, içerik, yardım sütunu ---------- */
+
+.skip {
+  position: absolute;
+  left: var(--s2);
+  top: -64px;
+  z-index: 60;
+  background: var(--panel);
+  color: var(--ink);
+  padding: var(--s2) var(--s4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-plate);
+}
+
+.skip:focus {
+  top: var(--s2);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  background: var(--rail-active);
+  color: var(--rail-text);
+  padding: var(--s2) var(--s4);
+  min-height: 56px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-weight: 700;
+  font-size: var(--t-subtitle);
+  letter-spacing: 0.01em;
+  margin-right: auto;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: #FFFFFF;
+}
+
+.brand svg {
+  width: 28px;
+  height: 28px;
+  flex: none;
+}
+
+.topbar label {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--rail-text-muted);
+}
+
+.topbar select {
+  background: var(--rail);
+  color: var(--rail-text);
+  border: 1px solid var(--rail-text-muted);
+  border-radius: var(--r-plate);
+  height: 40px;
+  padding: 0 var(--s2);
+  max-width: 46vw;
+}
+
+.topbar select option {
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.depot {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.topbar__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+@media (max-width: 599.98px) {
+  .depot {
+    flex: 1 1 100%;
+    order: 5;
+  }
+
+  .topbar select {
+    max-width: none;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* The label stays the button's accessible name; only its ink is dropped to fit one row. */
+  .iconbtn .iconbtn__label--wide {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* A layer anchored to a mid-bar button would leave the viewport: pin it under the bar instead. */
+  .popover {
+    position: fixed;
+    top: 60px;
+    left: var(--s2);
+    right: var(--s2);
+    width: auto;
+  }
+}
+
+.iconbtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-width: 40px;
+  height: 40px;
+  padding: 0 var(--s2);
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--rail-text-muted);
+  border-radius: var(--r-plate);
+  font-size: var(--t-meta);
+  font-weight: 600;
+}
+
+.iconbtn:hover,
+.iconbtn[aria-expanded='true'] {
+  background: var(--rail);
+}
+
+.iconbtn:active {
+  background: var(--rail-active);
+}
+
+.iconbtn--panel {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.iconbtn--panel:hover {
+  background: var(--zebra);
+}
+
+.iconbtn--panel:active {
+  background: var(--neutral-bg);
+}
+
+.iconbtn__count {
+  min-width: 1.4em;
+  padding: 0 4px;
+  border-radius: var(--r-plate);
+  background: var(--focus-on-rail);
+  color: #2B2100;
+  font-size: var(--t-label);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* Açılır katmanlar (bildirimler, kullanıcı menüsü) */
+.popover-anchor {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--s2));
+  z-index: 45;
+  width: min(92vw, 360px);
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-panel);
+  box-shadow: var(--float-shadow);
+}
+
+.popover__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--line);
+}
+
+.popover__head h2 {
+  font-size: var(--t-body);
+  font-weight: 650;
+}
+
+.popover__list > li {
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: var(--s1);
+  font-size: var(--t-data);
+}
+
+.popover__list > li:first-child {
+  border-top: 0;
+}
+
+.popover__list > li[data-unread='true'] {
+  background: var(--info-bg);
+}
+
+.popover__body {
+  padding: var(--s4);
+  display: grid;
+  gap: var(--s3);
+  font-size: var(--t-data);
+}
+
+.menu-list > li + li {
+  border-top: 1px solid var(--line);
+}
+
+.menu-list a,
+.menu-list button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: var(--s2) var(--s4);
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  font-size: var(--t-data);
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+}
+
+.menu-list a:hover,
+.menu-list button:hover {
+  background: var(--zebra);
+}
+
+.userline {
+  display: none;
+  font-size: var(--t-meta);
+  text-align: right;
+  line-height: 1.3;
+  max-width: 22ch;
+  overflow-wrap: anywhere;
+}
+
+.userline small {
+  display: block;
+  color: var(--rail-text-muted);
+  font-size: var(--t-label);
+}
+
+/* Gezinme rayı */
+.rail {
+  background: var(--rail);
+  color: var(--rail-text);
+  padding: var(--s4) 0 var(--s6);
+}
+
+.rail-group {
+  padding: var(--s3) var(--s4) var(--s1);
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--rail-text-muted);
+}
+
+.rail a {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 40px;
+  padding: var(--s2) var(--s4);
+  color: var(--rail-text);
+  text-decoration: none;
+  font-size: var(--t-data);
+  overflow-wrap: anywhere;
+}
+
+.rail a:hover {
+  background: var(--rail-active);
+  color: #FFFFFF;
+}
+
+.rail a[aria-current='page'] {
+  background: var(--rail-active);
+  color: #FFFFFF;
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--focus-on-rail);
+}
+
+.rail-close {
+  display: none;
+}
+
+.backdrop {
+  display: none;
+}
+
+main {
+  min-width: 0;
+  padding: var(--s4);
+}
+
+.view {
+  max-width: 1360px;
+}
+
+.view > * + * {
+  margin-top: var(--s6);
+}
+
+@media (max-width: 1023.98px) {
+  .rail {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
+    width: min(86vw, 300px);
+    transform: translateX(-102%);
+    visibility: hidden;
+    transition: transform 0.18s var(--ease-out), visibility 0s linear 0.18s;
+    box-shadow: var(--float-shadow);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .rail[data-open='true'] {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.18s var(--ease-out);
+  }
+
+  .rail-close {
+    display: inline-flex;
+    margin: 0 var(--s4) var(--s2);
+  }
+
+  .backdrop[data-open='true'] {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(12, 33, 53, 0.45);
+    border: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+  }
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  }
+
+  .menu-btn {
+    display: none;
+  }
+
+  .userline {
+    display: block;
+  }
+
+  main {
+    padding: var(--s6) var(--s8) var(--s12);
+  }
+}
+
+/* Kaynaklı Yardım: geniş ekranda yan sütun, dar ekranda sayfa üstü panel */
+.assist {
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  min-width: 0;
+}
+
+@media (min-width: 1200px) {
+  .shell[data-assist='open'] {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr) var(--assist-width);
+  }
+
+  .assist {
+    border-width: 0 0 0 1px;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .assist-backdrop {
+    display: none;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .assist {
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 50;
+    width: min(100vw, 420px);
+    border-width: 0 0 0 1px;
+    box-shadow: var(--float-shadow);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .assist-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(12, 33, 53, 0.45);
+    border: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 1199.98px) {
+  .assist {
+    animation: sheet-in 0.18s var(--ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .popover {
+    animation: pop-in 0.15s var(--ease-out);
+  }
+
+  @keyframes sheet-in {
+    from {
+      transform: translateX(24px);
+      opacity: 0;
+    }
+
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      transform: translateY(-4px);
+      opacity: 0;
+    }
+
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+
+/* While a modal layer (navigation drawer, assist sheet) is open the page behind does not scroll. */
+html:has(.assist-backdrop),
+html:has(.backdrop[data-open='true']) {
+  overflow: hidden;
+}
+
+/* Oturum açma ve parola ekranları (kabuk dışı) */
+.gate {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.gate__bar {
+  background: var(--rail-active);
+  color: var(--rail-text);
+  padding: var(--s3) var(--s4);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-height: 56px;
+}
+
+.gate__body {
+  padding: var(--s8) var(--s4) var(--s12);
+  display: grid;
+  justify-content: center;
+  align-content: start;
+  grid-template-columns: minmax(0, 28rem);
+}
+
+.gate__body--wide {
+  grid-template-columns: minmax(0, 40rem);
+}
+
+.gate h1 {
+  font-size: var(--t-title);
+  font-weight: 650;
+}
+
+.gate__form {
+  margin-top: var(--s6);
+  padding: var(--s6);
+  display: grid;
+  gap: var(--s4);
+}

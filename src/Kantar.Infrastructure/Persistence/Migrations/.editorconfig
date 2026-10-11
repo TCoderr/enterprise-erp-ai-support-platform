@@ -1,0 +1,6 @@
+# EF Core writes the files in this folder; they are not edited by hand and are not analysed.
+# Kept next to the files (not only in the repository root) so the rule also applies where only
+# src/ is present, e.g. inside the Docker build context.
+[*.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none

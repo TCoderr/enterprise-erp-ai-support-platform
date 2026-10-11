@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Kantar.Domain\Kantar.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Only the provider-neutral abstractions (DbSet, IQueryable extensions). No SQL Server types here. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
+</Project>

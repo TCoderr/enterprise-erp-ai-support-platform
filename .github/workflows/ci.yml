@@ -1,0 +1,126 @@
+# This workflow has NOT been run on a hosted runner: the repository was never pushed.
+# Local verification (scripts/verify.ps1) is the only evidence so far; local != remote.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: "1"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_CLI_UI_LANGUAGE: en
+
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Restore (locked)
+        run: dotnet restore Kantar.slnx --locked-mode
+      - name: Build (Release, warnings are errors)
+        run: dotnet build Kantar.slnx -c Release --no-restore
+      - name: Unit tests
+        run: dotnet test --project tests/Kantar.UnitTests -c Release --no-build
+      # Starts its own disposable SQL Server 2022 Developer container (Testcontainers); the application
+      # under test connects with the restricted kantar_app login. Developer edition: dev/test use only.
+      - name: Integration tests (real SQL Server)
+        run: dotnet test --project tests/Kantar.IntegrationTests -c Release --no-build
+      - name: Model has no pending migration
+        run: |
+          dotnet tool restore
+          dotnet ef migrations has-pending-model-changes --project src/Kantar.Infrastructure --startup-project src/Kantar.Infrastructure --configuration Release --no-build
+      - name: Known-vulnerable NuGet packages
+        run: |
+          dotnet list Kantar.slnx package --vulnerable --include-transitive | tee vulnerable.txt
+          ! grep -q "has the following vulnerable packages" vulnerable.txt
+
+  web:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: src/web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+          cache-dependency-path: src/web/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --omit=dev --audit-level=high
+
+  # Browser tests against the real stack. The answer provider is the deterministic demo provider:
+  # hosted CI has no local model, and the live-model gate is an explicit local opt-in
+  # (scripts/gates/ai-live.ps1), never part of CI.
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    needs: [backend, web]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+          cache-dependency-path: src/web/package-lock.json
+      - name: Development certificate for the local HTTPS listener
+        run: dotnet dev-certs https
+      - name: Start an isolated stack
+        run: |
+          ./scripts/local-stack.sh init --project kantar-e2e --local-dir .local-e2e --port 8963
+          ./scripts/local-stack.sh up --project kantar-e2e --local-dir .local-e2e --port 8963 --relax-rate-limits
+          ./scripts/local-stack.sh seed --project kantar-e2e --local-dir .local-e2e --port 8963
+      - name: Browser tests (1 worker)
+        working-directory: src/web
+        env:
+          KANTAR_E2E_BASE_URL: https://localhost:8963
+          KANTAR_E2E_SEED_DIR: ${{ github.workspace }}/.local-e2e/seed
+          KANTAR_E2E_CHANNEL: chromium
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          npm run e2e
+      - name: Stack logs on failure
+        if: failure()
+        run: ./scripts/local-stack.sh logs --project kantar-e2e --local-dir .local-e2e --port 8963
+      # Screenshots are taken with synthetic demo data only; passwords are never typed into a captured frame
+      # (trace and video are off in playwright.config.ts).
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results
+          path: |
+            src/web/test-results/e2e-results.json
+            src/web/test-results/**/*.png
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Remove the stack
+        if: always()
+        run: ./scripts/local-stack.sh reset --project kantar-e2e --local-dir .local-e2e --port 8963 --confirm-reset kantar-e2e

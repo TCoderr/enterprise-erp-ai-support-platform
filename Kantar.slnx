@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kantar.Domain/Kantar.Domain.csproj" />
+    <Project Path="src/Kantar.Application/Kantar.Application.csproj" />
+    <Project Path="src/Kantar.Infrastructure/Kantar.Infrastructure.csproj" />
+    <Project Path="src/Kantar.Api/Kantar.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Kantar.Testing/Kantar.Testing.csproj" />
+    <Project Path="tests/Kantar.UnitTests/Kantar.UnitTests.csproj" />
+    <Project Path="tests/Kantar.IntegrationTests/Kantar.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
